@@ -1,21 +1,22 @@
 import csv
 
+
 class Grades:
-    def __init__(self, min_value: int=None, max_value: int=None):
+    def __init__(self, min_value=None, max_value=None):
         self.min_value = min_value
         self.max_value = max_value
-    
+
     def __set_name__(self, owner, name):
         self.param_name = "_" + name
 
     def __get__(self, instance, owner):
         return getattr(instance, self.param_name)
-    
+
     def __set__(self, instance, value):
         self.validate(value)
         setattr(instance, self.param_name, value)
-    
-    def validate(self, value:int):
+
+    def validate(self, value: int):
         if not isinstance(value, int):
             raise TypeError(f'Значение {value} должно быть целым числом')
         if self.min_value is not None and value < self.min_value:
@@ -23,12 +24,14 @@ class Grades:
         if self.max_value is not None and value > self.max_value:
             raise ValueError(f'Значение {value} должно быть меньше {self.max_value}')
 
+
 class Names:
     def __init__(self, param):
         self.param = param
+
     def __set_name__(self, owner, name):
         self.param_name = '_' + name
-    
+
     def __get__(self, instance, owner):
         return getattr(instance, self.param_name)
 
@@ -36,40 +39,42 @@ class Names:
         self.validate(value)
         setattr(instance, self.param_name, value)
 
-    def validate(self, value:str):
-        if value.istitle() == False:
+    def validate(self, value: str):
+        if not value.istitle():
             raise ValueError(f'Значение {value} должно с заглавной буквы ')
-        if value.isalpha() == False:
-            raise ValueError(f'Значение {value} не должно содержать цыфры')
-        
+        if not value.isalpha():
+            raise ValueError(f'Значение {value} не должно содержать цифры')
+
 
 class Subjects:
     def __init__(self, param):
         self.param = param
+
     def __set_name__(self, owner, name):
         self.param_name = '_' + name
-    
+
     def __get__(self, instance, owner):
         return getattr(instance, self.param_name)
-    
+
     def __set__(self, instance, value):
         self.validate(value)
         setattr(instance, self.param_name, value)
 
-    def validate(self, value:str):
+    def validate(self, value: str):
         data = []
-        with open('subjects.csv', 'r', newline='') as f:
+        with open('subjects.csv', 'r') as f:
             csv_file = csv.reader(f)
             for line in csv_file:
-                data.append(''.join(line)) 
-                    
-            if value not in data: 
+                data.append(''.join(line))
+
+            if value not in data:
                 raise ValueError(f'Значение {value} нет в списке ')
-        
+
+
 class Student:
     last_name = Names(str)
-    first_name = Names (str)
-    father_name = Names (str)
+    first_name = Names(str)
+    father_name = Names(str)
 
     grade = Grades(2, 5)
     exam = Grades(0, 100)
@@ -84,3 +89,7 @@ class Student:
         self.exam = exam
         self.grade = grade
 
+
+if __name__ == "__main__":
+    std_one = Student('Alex', 'Ivanov', 'Ovanovich', 'Math', 3, 99)
+    std_two = Student('Ivan', 'Petrov', 'Petrovich', 'English', 4, 100)
