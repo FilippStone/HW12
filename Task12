@@ -84,7 +84,3 @@ class Student:
         self.exam = exam
         self.grade = grade
 
-
-if __name__ == '__main__':
-    std_one = Student('Petr', 'Ivanov', 'Romanovich', 'Math', 3, 99)
-    std_two = Student('Ivan', 'Petrov', 'Igorevich', 'English', 4, 99)
