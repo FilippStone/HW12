@@ -62,13 +62,17 @@ class Subjects:
 
     def validate(self, value: str):
         data = []
-        with open('subjects.csv', 'r') as f:
-            csv_file = csv.reader(f)
-            for line in csv_file:
-                data.append(''.join(line))
+        subjects = ['Math', 'Physics', 'Chemistry', 'English', 'History']
+
+        with open('subjects.csv', 'r', newline='') as f:
+            writer = csv.writer(f)
+            for subject in subjects:
+                writer.writerow([subject])
 
             if value not in data:
                 raise ValueError(f'Значение {value} нет в списке ')
+
+
 
 
 class Student:
@@ -90,6 +94,8 @@ class Student:
         self.grade = grade
 
 
+
+
 if __name__ == "__main__":
-    std_one = Student('Alex', 'Ivanov', 'Ovanovich', 'Math', 3, 99)
+    std_one = Student('Alex', 'Ivanov', 'Ivanovich', 'Math', 3, 99)
     std_two = Student('Ivan', 'Petrov', 'Petrovich', 'English', 4, 100)
